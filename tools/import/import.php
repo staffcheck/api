@@ -5,7 +5,7 @@ if ( PHP_SAPI != 'cli' ) {
 	exit;
 }
 
-require_once( dirname(__FILE__) . '/../../classes/modules/api/client/ClientAPI.class.php');
+require_once( dirname(__FILE__) . '/../../classes/modules/api/client/SoapClientAPI.class.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1 ); //Try to display any errors that may arise from the API.
@@ -225,7 +225,7 @@ if ( $argc < 3 OR in_array ($argv[1], array('--help', '-help', '-h', '-?') ) ) {
 
 	$URL = $api_url;
 
-	$api_session = new ClientAPI();
+	$api_session = new SoapClientAPI();
 	$api_session->Login( $username, $password );
 	if ( $SESSION_ID == FALSE ) {
 		echo "API Username/Password is incorrect!\n";
@@ -248,7 +248,7 @@ if ( $argc < 3 OR in_array ($argv[1], array('--help', '-help', '-h', '-?') ) ) {
 				echo "Column map is invalid!\n";
 			}
 
-			$obj = new ClientAPI( 'Import'. ucfirst( $object ) );
+			$obj = new SoapClientAPI( 'Import'. ucfirst( $object ) );
 			$obj->setRawData( file_get_contents( $import_csv_file ) );
 			//var_dump( $obj->getOptions('columns') );
 
@@ -262,7 +262,7 @@ if ( $argc < 3 OR in_array ($argv[1], array('--help', '-help', '-h', '-?') ) ) {
 			}
 		} else {
 			//Get export mapping.
-			$obj = new ClientAPI( 'UserGenericData' );
+			$obj = new SoapClientAPI( 'UserGenericData' );
 			$result = $obj->getUserGenericData( array( 'filter_data' => array('script' => 'import_wizard'. strtolower($object), 'name' => $export_map ) ) );
 			$retval = $result->getResult();
 			if ( is_array($retval) AND isset($retval[0]['data']) ) {
