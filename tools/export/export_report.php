@@ -4,7 +4,7 @@ if ( PHP_SAPI != 'cli' ) {
 	echo "This script can only be called from the Command Line.\n";
 	exit;
 }
-require_once( dirname(__FILE__) . '/../../classes/modules/api/client/ClientAPI.class.php');
+require_once( dirname(__FILE__) . '/../../classes/modules/api/client/SoapClientAPI.class.php');
 
 //Example:	php export_report.php -server "http://192.168.1.1/api/soap/api.php" -username myusername -password mypass -report UserSummaryReport -template "by_employee+contact" /tmp/employee_list.csv csv
 //			php export_report.php -server "http://192.168.1.1/api/soap/api.php" -username myusername -password mypass -report UserSummaryReport -time_period last_year /tmp/employee_list.csv csv
@@ -114,7 +114,7 @@ if ( $argc < 3 OR in_array ($argv[1], array('--help', '-help', '-h', '-?') ) ) {
 
 	$URL = $api_url;
 
-	$api_session = new ClientAPI();
+	$api_session = new SoapClientAPI();
 	$api_session->Login( $username, $password );
 	if ( $SESSION_ID == FALSE ) {
 		echo "API Username/Password is incorrect!\n";
@@ -123,11 +123,11 @@ if ( $argc < 3 OR in_array ($argv[1], array('--help', '-help', '-h', '-?') ) ) {
 	//echo "Session ID: $SESSION_ID\n";
 
 	if ( $report != '' ) {
-		$report_obj = new ClientAPI( $report );
+		$report_obj = new SoapClientAPI( $report );
 
 		$config = array();
 		if ( $saved_report != '' ) {
-			$saved_report_obj = new ClientAPI( 'UserReportData' );
+			$saved_report_obj = new SoapClientAPI( 'UserReportData' );
 			$saved_report_result = $saved_report_obj->getUserReportData( array('filter_data' => array('name' => trim($saved_report) ) ) );
 			$saved_report_data = $saved_report_result->getResult();
 			if ( is_array($saved_report_data) AND isset($saved_report_data[0]) AND isset($saved_report_data[0]['data']) ) {
