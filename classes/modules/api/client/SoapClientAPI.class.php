@@ -3,9 +3,9 @@
 
 
 /**
- * @package API\ClientAPI
+ * @package API\SoapClientAPI
  */
-class ClientAPI {
+class SoapClientAPI {
 	protected $url = NULL;
 	protected $session_id = NULL;
 	protected $session_hash = NULL; //Used to determine if we need to login again because the URL or Session changed.
@@ -16,7 +16,7 @@ class ClientAPI {
 	protected $soap_obj = NULL; //Persistent SOAP object.
 
 	/**
-	 * ClientAPI constructor.
+	 * SoapClientAPI constructor.
 	 * @param null $class
 	 * @param null $url
 	 * @param string $session_id UUID
@@ -220,7 +220,7 @@ class ClientAPI {
 	/**
 	 * @param $function_name
 	 * @param array $args
-	 * @return bool|ClientAPIReturnHandler
+	 * @return bool|SoapClientAPIReturnHandler
 	 */
 	function __call( $function_name, $args = array() ) {
 		if ( is_object( $this->getSoapClientObject() ) ) {
@@ -232,7 +232,7 @@ class ClientAPI {
 				return FALSE;
 			}
 
-			return new ClientAPIReturnHandler( $function_name, $args, $retval );
+			return new SoapClientAPIReturnHandler( $function_name, $args, $retval );
 		}
 
 		return FALSE;
@@ -240,9 +240,9 @@ class ClientAPI {
 }
 
 /**
- * @package API\ClientAPI
+ * @package API\SoapClientAPI
  */
-class ClientAPIReturnHandler {
+class SoapClientAPIReturnHandler {
 	/*
 	'api_retval' => $retval,
 	'api_details' => array(
@@ -261,7 +261,7 @@ class ClientAPIReturnHandler {
 	protected $result_data = FALSE;
 
 	/**
-	 * ClientAPIReturnHandler constructor.
+	 * SoapClientAPIReturnHandler constructor.
 	 * @param $function_name
 	 * @param $args
 	 * @param $result_data
